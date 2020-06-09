@@ -22,60 +22,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  String _value = "";
+
   int item = 0;
   final drawerItems = [
     new Screen1(),
     new Screen2(),
   ];
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
-  showAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
 
-    // set up the AlertDialog
-    Transform alert = Transform.rotate(
-      angle: math.radians(180),
-      child: AlertDialog(
-        title: Text("My title"),
-        content: Text(
-            "This is my message. this was input on the text input; $_value"),
-        actions: [
-          okButton,
-        ],
-      ),
-    );
 
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
 
-  setValue(value) {
-    setState(() {
-      _value = value;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

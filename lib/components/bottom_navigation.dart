@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:vector_math/vector_math.dart' as math;
 import '../screens/screen1.dart';
 import '../screens/screen2.dart';
 class MyHomePage extends StatefulWidget {
@@ -65,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         currentIndex: item,
-        selectedItemColor: Colors.blueAccent,
+        selectedItemColor: Colors.red,
         onTap: _onItemTapped,
       ),
     );

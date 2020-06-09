@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math.dart' as math;
 
+// ignore: must_be_immutable
 class IntentScreen extends StatefulWidget {
   String text;
   IntentScreen({Key key, @required this.text}) : super(key: key);
@@ -16,61 +17,10 @@ class IntentScreen extends StatefulWidget {
 
 
   @override
-  _Screen1 createState() => _Screen1(text);
+  _Screen1 createState() => _Screen1();
 }
 
 class _Screen1 extends State<IntentScreen> {
-  int _counter = 0;
-  String _value = "";
-  String text;
-  _Screen1(this.text);
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  showAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-
-    // set up the AlertDialog
-    Transform alert = Transform.rotate(
-      angle: math.radians(180),
-      child: AlertDialog(
-        title: Text("My title"),
-        content: Text(
-            "This is my message. this was input on the text input; $_value"),
-        actions: [
-          okButton,
-        ],
-      ),
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  setValue(value) {
-    setState(() {
-      _value = value;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +55,7 @@ class _Screen1 extends State<IntentScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
 
-            Text(text)
+            Text(widget.text)
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
