@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart'; //library used to do a floating navigation
 
 import '../screens/screen1.dart';
 import '../screens/screen2.dart';
@@ -27,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
     new Screen2(),
   ];
 
-
+  //method used to change screens
   _onItemTapped(value){
     setState(() {
       item=value;
@@ -52,19 +53,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
       body: drawerItems[item],
 
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            title: Text('Tab2'),
-          ),
+      bottomNavigationBar: FloatingNavbar(//widget from the floating navigation library
+        backgroundColor: Colors.blueAccent,
+        items: [
+          FloatingNavbarItem(icon: Icons.home, title: 'Home'),
+          FloatingNavbarItem(icon: Icons.explore, title: 'Tab 2'),
         ],
         currentIndex: item,
-        selectedItemColor: Colors.red,
+        selectedItemColor: Colors.blueAccent,
         onTap: _onItemTapped,
       ),
     );

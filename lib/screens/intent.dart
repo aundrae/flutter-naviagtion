@@ -1,26 +1,84 @@
 import 'package:flutter/material.dart';
-import 'package:vector_math/vector_math.dart' as math;
+import 'package:newapp/screens/webview.dart';
+import 'package:http/http.dart' as http; //third party library used to access data from online
+import 'dart:convert';
 
 // ignore: must_be_immutable
 class IntentScreen extends StatefulWidget {
   String text;
+
   IntentScreen({Key key, @required this.text}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
 
   @override
   _Screen1 createState() => _Screen1();
 }
 
 class _Screen1 extends State<IntentScreen> {
+  //URL used for the get request
+  final String url = "https://jsonplaceholder.typicode.com/albums/1/photos";
+  List _data; //stores the data from the server
+  bool _fetchComplete = false; //used to show and hide loading animation
+
+  //Initialize the app
+  void initState() {
+    super.initState();
+    //Calls the method hear so that when this screen is initialized it will auto pull the data from the server.
+    getData();
+  }
+
+  //Get request from server
+  getData() async {
+    final http.Response response = await http.get(url);
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+
+      //setState is used so that the screen will auto update when the data is parsed;
+      setState(() {
+        _data = json.decode(response.body);
+        _fetchComplete = true;
+      });
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  // Renders list of items from _data variable
+  Widget _buildList() {
+    return (Center(
+        //ListView.builder auto generates using the _data information
+        //which includes the actual data and the length of the array.
+        child: ListView.builder(
+      shrinkWrap: true,
+      itemCount: _data == null ? 0 : _data.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Card(
+            child: InkWell(
+          //This allows the entire Card widget to be clicked
+          // it uses the onTap to do the functionality set and will show feedback when it is clicked
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WebView(url: _data[index]["url"]),
+                ));
+          },
+          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+            Image.network(
+              _data[index]['thumbnailUrl'].toString(),
+              fit: BoxFit.fill,
+            ),
+            ListTile(
+              leading: Icon(Icons.album),
+              title: Text(_data[index]["title"].toString().toUpperCase()), //this is how to access a json object fromm an array of objects
+            ),
+          ]),
+        ));
+      },
+    )));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,34 +89,13 @@ class _Screen1 extends State<IntentScreen> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Intent Screen"),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-
-            Text(widget.text)
-          ],
+        appBar: AppBar(
+          title: Text(widget.text),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        body: _fetchComplete // if false will show loading animation, else will display the returned list
+            ? _buildList()
+            : Center(
+                child: CircularProgressIndicator(),
+              ));
   }
 }
