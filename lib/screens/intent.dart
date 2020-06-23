@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newapp/screens/webview.dart';
-import 'package:http/http.dart' as http; //third party library used to access data from online
+import 'package:http/http.dart'
+    as http; //third party library used to access data from online
 import 'dart:convert';
 import 'package:animations/animations.dart';
 
@@ -46,7 +47,7 @@ class _Screen1 extends State<IntentScreen> {
     }
   }
 
-  // Renders list of items from _data variable
+  // Renders list of items from [_data] variable
   Widget _buildList() {
     return (Center(
         //ListView.builder auto generates using the _data information
@@ -73,7 +74,9 @@ class _Screen1 extends State<IntentScreen> {
             ),
             ListTile(
               leading: Icon(Icons.album),
-              title: Text(_data[index]["title"].toString().toUpperCase()), //this is how to access a json object fromm an array of objects
+              title: Text(_data[index]["title"]
+                  .toString()
+                  .toUpperCase()), //this is how to access a json object fromm an array of objects
             ),
           ]),
         ));
@@ -93,10 +96,11 @@ class _Screen1 extends State<IntentScreen> {
         appBar: AppBar(
           title: Text(widget.text),
         ),
-        body: _fetchComplete // if false will show loading animation, else will display the returned list
-            ? _buildList()
-            : Center(
-                child: CircularProgressIndicator(),
-              ));
+        body:
+            _fetchComplete // if false will show loading animation, else will display the returned list
+                ? _buildList()
+                : Center(
+                    child: CircularProgressIndicator(),
+                  ));
   }
 }
