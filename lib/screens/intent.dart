@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newapp/screens/webview.dart';
 import 'package:http/http.dart' as http; //third party library used to access data from online
 import 'dart:convert';
+import 'package:animations/animations.dart';
 
 // ignore: must_be_immutable
 class IntentScreen extends StatefulWidget {
