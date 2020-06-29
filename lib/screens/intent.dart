@@ -1,9 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:newapp/screens/webview.dart';
 import 'package:http/http.dart'
     as http; //third party library used to access data from online
-import 'dart:convert';
-import 'package:animations/animations.dart';
+import './webview.dart';
 
 // ignore: must_be_immutable
 class IntentScreen extends StatefulWidget {
@@ -43,13 +43,13 @@ class _Screen1 extends State<IntentScreen> {
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      throw Exception('Failed to load album');
+      _data=[];
     }
   }
 
   // Renders list of items from [_data] variable
   Widget _buildList() {
-    return (Center(
+    return Center(
         //ListView.builder auto generates using the _data information
         //which includes the actual data and the length of the array.
         child: ListView.builder(
@@ -81,7 +81,7 @@ class _Screen1 extends State<IntentScreen> {
           ]),
         ));
       },
-    )));
+    ));
   }
 
   @override
