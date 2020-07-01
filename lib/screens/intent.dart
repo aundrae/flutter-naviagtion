@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart'
     as http; //third party library used to access data from online
 import './webview.dart';
+import '../model/model.dart';// ignore: must_be_immutable
 
 // ignore: must_be_immutable
 class IntentScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class IntentScreen extends StatefulWidget {
 class _Screen1 extends State<IntentScreen> {
   //URL used for the get request
   final String url = "https://jsonplaceholder.typicode.com/albums/1/photos";
-  List _data; //stores the data from the server
+  List<Album> _data; //stores the data from the server
   bool _fetchComplete = false; //used to show and hide loading animation
 
   //Initialize the app
@@ -37,7 +38,14 @@ class _Screen1 extends State<IntentScreen> {
 
       //setState is used so that the screen will auto update when the data is parsed;
       setState(() {
-        _data = json.decode(response.body);
+        //Returns a view of this list as a list of [R] instances.
+         final _response = json.decode(response.body).cast<Map<String, dynamic>>();
+         //print(_response);
+
+         //Creates and stores the objects in the _data variable
+         _data = _response.map<Album>((json) => Album.fromJson(json)).toList();
+         //print(_data);
+
         _fetchComplete = true;
       });
     } else {
@@ -64,17 +72,17 @@ class _Screen1 extends State<IntentScreen> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => WebView(url: _data[index]["url"]),
+                  builder: (context) => WebView(url: _data[index].url),
                 ));
           },
           child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
             Image.network(
-              _data[index]['thumbnailUrl'].toString(),
+              _data[index].thumbnailUrl.toString(),
               fit: BoxFit.fill,
             ),
             ListTile(
               leading: Icon(Icons.album),
-              title: Text(_data[index]["title"]
+              title: Text(_data[index].title
                   .toString()
                   .toUpperCase()), //this is how to access a json object fromm an array of objects
             ),
