@@ -5,7 +5,7 @@ class Album {
   String url;
   String thumbnailUrl;
 
-  Album({this.id, this.albumId, this.title, this.url, this.thumbnailUrl});
+  Album(this.id, this.albumId, this.title, this.url, this.thumbnailUrl);
 
   //Creates new album object from the json object
   Album.fromJson(Map<String, dynamic> json)
@@ -18,5 +18,9 @@ class Album {
   //Getter method to return id
   int getId(){
     return this.id;
+  }
+
+  getTitle(){
+    return this.title;
   }
 }
